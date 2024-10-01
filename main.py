@@ -91,6 +91,23 @@ def pedir_hora():
     hablar(hora)
 
 # Función saludo inicial
+def cambiarNombre():
+    hablar("¿Cuál es tu nombre?")
+    pedido = transformar_audio_texto().lower()
+    
+    hablar("¿Tu nombre es: " + pedido + "?")
+    pedido2 = transformar_audio_texto().lower()
+
+    if "sí" in pedido2 or "si" in pedido2:
+        with open('nombre.txt', 'w') as archivo:
+            archivo.write(pedido.capitalize())  
+        hablar("Tu nombre ha sido guardado.")
+    elif "salir":
+        return
+    else:
+        hablar("Entendido, intentemos de nuevo.")
+        cambiarNombre()
+
 def saludo_inicial():
     # Crear variable con datos de hora
     hora = datetime.datetime.now()
@@ -103,7 +120,7 @@ def saludo_inicial():
         momento = "Buenas tardes"
 
     # Decir saludo
-    hablar(f"{momento} Juan, en qué te puedo ayudar?")
+    hablar(f"{momento} {obtenerNombre()}, en qué te puedo ayudar?")
 
 def ejecutarComando():
 
@@ -126,21 +143,36 @@ def ejecutarComando():
         elif "ninguno" in pedido:
             hablar("Abandonando el asistente de guit")
             keep = False
+        else:
+            hablar("No te entendí, Di ninguno para abandonar el asistente de git")
 
     return
 
-# Función central del asistente
+def obtenerNombre():
+    try:
+        with open('nombre.txt', 'r') as archivo:
+            contenido = archivo.read()
+            if contenido:
+                return contenido
+            else:
+                return ""
+    except FileNotFoundError:
+        with open('nombre.txt', 'w') as archivo:
+            archivo.write("")
+            return ""
+
 def centro_pedido():
     # Saludo inicial
+    nombre = obtenerNombre()
     saludo_inicial()
-        
+     
     # Variable de corte
     comenzar = True
 
     while comenzar:
         # Activar el micrófono y guardar el pedido en un String
         pedido = transformar_audio_texto().lower()
-
+        nombre = obtenerNombre()
         print(f"Comando recibido: {pedido}")
 
         if "abrir youtube" in pedido:
@@ -175,8 +207,11 @@ def centro_pedido():
         elif "git" in pedido:
             ejecutarComando()
         
+        elif "nombre" in pedido:
+            cambiarNombre()
+        
         elif "adiós" in pedido:
-            hablar(f"Nos vemos, avisame si necesitas otra cosa Juan")
+            hablar(f"Nos vemos, avisame si necesitas otra cosa {nombre}")
             break
 
 
