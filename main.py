@@ -229,7 +229,10 @@ def centro_pedido():
              if estaReproduciendo == False:
                 hablar("Sigue escuchando tu cancion")
                 pyautogui.press('space')
-                
+        
+        elif "saltear" in pedido:
+            hablar("Salteando la canción actual")
+            pyautogui.hotkey('shift', 'n')
         elif "adiós" in pedido:
             hablar(f"Nos vemos, avisame si necesitas otra cosa {nombre}")
             break
