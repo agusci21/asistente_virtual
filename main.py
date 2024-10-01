@@ -4,6 +4,7 @@ import pywhatkit
 import webbrowser
 import datetime
 import os
+import pyautogui 
 
 # Opciones de voz / idioma
 id1 = "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Speech\\Voices\\Tokens\\TTS_MS_EN-US_DAVID_11.0"
@@ -168,6 +169,7 @@ def centro_pedido():
      
     # Variable de corte
     comenzar = True
+    estaReproduciendo = False
 
     while comenzar:
         # Activar el micrófono y guardar el pedido en un String
@@ -197,6 +199,7 @@ def centro_pedido():
             continue
         elif "reproducir" in pedido:
             hablar("Reproduciendo")
+            estaReproduciendo = True
             pedido = pedido.replace("reproducir", "").strip()
             pywhatkit.playonyt(pedido)
             continue
@@ -210,6 +213,23 @@ def centro_pedido():
         elif "nombre" in pedido:
             cambiarNombre()
         
+        elif "pausar" in pedido:
+            if estaReproduciendo:
+                estaReproduciendo = False
+                pyautogui.press('space')
+                hablar("Pausado")
+
+        elif "pausa" in pedido:
+            if estaReproduciendo:
+                estaReproduciendo = False
+                pyautogui.press('space')
+                hablar("Pausado")
+
+        elif "continuar" in pedido:
+             if estaReproduciendo == False:
+                hablar("Sigue escuchando tu cancion")
+                pyautogui.press('space')
+                
         elif "adiós" in pedido:
             hablar(f"Nos vemos, avisame si necesitas otra cosa {nombre}")
             break
