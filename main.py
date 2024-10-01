@@ -106,20 +106,26 @@ def saludo_inicial():
     hablar(f"{momento} Juan, en qué te puedo ayudar?")
 
 def ejecutarComando():
-    hablar("¿Que comando de git quieres ejecutar?")
-    pedido = transformar_audio_texto().lower()
-    if "init" in pedido:
-        os.system("git init")
-        hablar("Se ejecuto el comando git init")
-    if "agregar" in pedido:
-        os.system("git add .")
-        hablar("Se ejecuto el comando git add punto")
 
-    if "commit" in pedido:
-        hablar("Dale un nombre a tu commit")
+    keep = True
+    while keep:
+        hablar("¿Que comando de git quieres ejecutar?")
         pedido = transformar_audio_texto().lower()
-        os.system("git commit -am " + "\"" + pedido + "\"")
-        hablar("se genero el commit con el nombre " + pedido)
+        if "init" in pedido:
+            os.system("git init")
+            hablar("Se ejecuto el comando git init")
+        elif "agregar" in pedido:
+            os.system("git add .")
+            hablar("Se ejecuto el comando git add punto")
+
+        elif "commit" in pedido:
+            hablar("Dale un nombre a tu commit")
+            pedido = transformar_audio_texto().lower()
+            os.system("git commit -am " + "\"" + pedido + "\"")
+            hablar("se genero el commit con el nombre " + pedido)
+        elif "ninguno" in pedido:
+            hablar("Abandonando el asistente de guit")
+            keep = False
 
     return
 
