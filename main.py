@@ -233,6 +233,20 @@ def centro_pedido():
         elif "saltear" in pedido:
             hablar("Salteando la canción actual")
             pyautogui.hotkey('shift', 'n')
+        
+        elif "subir" in pedido:
+            veces = 1
+            if "mucho" in pedido:
+                veces = 5
+            for i in range(veces):
+                pyautogui.press('volumeup')
+        elif "bajar" in pedido:
+            veces = 1
+            if "mucho" in pedido:
+                veces = 5
+            for i in range(veces):
+                pyautogui.press('volumedown')
+
         elif "adiós" in pedido:
             hablar(f"Nos vemos, avisame si necesitas otra cosa {nombre}")
             break
